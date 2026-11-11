@@ -1,0 +1,192 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+body{
+    background: linear-gradient(135deg,#0f172a,#020617);
+    color:#e5e7eb;
+    min-height:100vh;
+}
+
+/* HEADER */
+header{
+    background:#020617;
+    padding:20px 40px;
+    border-bottom:1px solid #1e293b;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+    color:#38bdf8;
+}
+
+.menu{
+    list-style:none;
+    display:flex;
+    gap:25px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#e5e7eb;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.menu a:hover{
+    color:#38bdf8;
+}
+
+/* CONTAINER CENTRAL */
+.app-container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:60px 20px;
+}
+
+/* CARD PRINCIPAL */
+.app-box{
+    width:600px;
+    background:#020617;
+    padding:35px;
+    border-radius:16px;
+    box-shadow:0 0 30px rgba(0,0,0,0.4);
+}
+
+.app-box h2{
+    margin-bottom:10px;
+    color:#38bdf8;
+}
+
+.app-box p{
+    margin-bottom:25px;
+    opacity:0.8;
+}
+
+/* FORM */
+.field{
+    margin-bottom:20px;
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    margin-bottom:6px;
+    font-size:14px;
+}
+
+input{
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #1e293b;
+    background:#0f172a;
+    color:white;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#38bdf8;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#0ea5e9;
+}
+
+/* PROGRESS BAR */
+progress{
+    height:18px;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    opacity:0.6;
+    font-size:14px;
+}
+
+
+/* =========================
+   ANIMAÇÃO DA PROGRESS BAR
+   ========================= */
+
+progress{
+    height:18px;
+    border-radius:999px;
+    overflow:hidden;
+    appearance:none;
+}
+
+/* fundo da barra */
+progress::-webkit-progress-bar{
+    background:#0f172a;
+    border-radius:999px;
+}
+
+/* valor preenchido */
+progress::-webkit-progress-value{
+    border-radius:999px;
+    background: linear-gradient(
+        90deg,
+        #38bdf8,
+        #0ea5e9,
+        #38bdf8
+    );
+    background-size: 200% 100%;
+    animation: moveGradient 2s linear infinite;
+    transition: width 0.4s ease;
+}
+
+/* Firefox */
+progress::-moz-progress-bar{
+    border-radius:999px;
+    background: linear-gradient(
+        90deg,
+        #38bdf8,
+        #0ea5e9,
+        #38bdf8
+    );
+    background-size: 200% 100%;
+    animation: moveGradient 2s linear infinite;
+}
+
+/* =========================
+   ANIMAÇÃO DO TEXTO DE STATUS
+   ========================= */
+
+#statusText{
+    opacity: 0;
+    transform: translateY(6px);
+    animation: statusFade 0.6s ease forwards;
+}
+
+/* toda vez que o texto mudar o navegador reaplica a animação */
+#statusText:not(:empty){
+    animation: statusFade 0.6s ease forwards;
+}
+
+@keyframes statusFade{
+    from{
+        opacity:0;
+        transform: translateY(6px);
+    }
+    to{
+        opacity:1;
+        transform: translateY(0);
+    }
+}

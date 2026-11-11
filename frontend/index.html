@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>ISO Builder</title>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">ISO Builder</div>
+    <nav>
+        <ul class="menu">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="app-container">
+    <div class="app-box">
+
+        <h2>Gerador de ISO Linux</h2>
+        <p>Crie ISOs personalizadas com pacotes adicionais de forma simples.</p>
+
+        <form id="isoForm" class="form">
+
+            <div class="field">
+                <label>Imagem ISO</label>
+                <input id="iso" type="file" name="iso" accept=".iso" required>
+            </div>
+
+            <div class="field">
+                <label>Pacotes .deb (opcional)</label>
+                <input type="file" name="debs" accept=".deb" multiple>
+            </div>
+
+            <div class="field">
+                <label>Pasta de saída</label>
+                <input id="output_dir" type="text" name="output_dir" placeholder="~/Desktop/minha_iso" required>
+            </div>
+
+            <button type="submit">Gerar ISO personalizada</button>
+
+            <div style="margin-top:20px;">
+                <progress id="progressBar" value="0" max="100"></progress>
+                <p id="statusText"></p>
+            </div>
+
+        </form>
+
+    </div>
+</main>
+
+<footer>
+Projeto acadêmico • Gerador de ISO Linux personalizado
+</footer>
+
+<script>
+/* SEU JS ORIGINAL — INTACTO */
+document.getElementById("isoForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    iniciarExtracao();
+});
+
+async function iniciarExtracao() {
+    const formData = new FormData();
+    const isoFile = document.getElementById("iso").files[0];
+    const outputDir = document.getElementById("output_dir").value;
+    const debFiles = document.querySelector('input[name="debs"]').files;
+
+    formData.append("iso", isoFile);
+    formData.append("output_dir", outputDir);
+
+    for (let i = 0; i < debFiles.length; i++) {
+        formData.append("debs", debFiles[i]);
+    }
+
+    const response = await fetch("/build/linux", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await response.json();
+    acompanharProgresso(data.task_id);
+}
+
+async function acompanharProgresso(taskId) {
+    const bar = document.getElementById("progressBar");
+    const text = document.getElementById("statusText");
+
+    const interval = setInterval(async () => {
+        const response = await fetch("/progress/" + taskId);
+        const data = await response.json();
+
+        bar.value = data.progress;
+        text.innerText = data.status;
+
+        if (data.progress >= 100 || data.status.startsWith("Erro")) {
+            clearInterval(interval);
+        }
+    }, 1000);
+}
+</script>
+
+</body>
+</html>
